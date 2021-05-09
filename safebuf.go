@@ -56,7 +56,7 @@ func (buf *safeBuf) tryAddRuneSelf(b byte) bool {
 
 func (buf *safeBuf) tryAddRuneError(r rune, size int) bool {
 	if r == utf8.RuneError && size == 1 {
-		buf.AppendString(TokenReplacement)
+		buf.AppendString(tokenReplacement)
 		return true
 	}
 	return false

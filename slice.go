@@ -33,7 +33,7 @@ type sliceEncoder struct {
 func (s *sliceEncoder) flush(buf *buffer.Buffer) *buffer.Buffer {
 	for i := range s.elems {
 		if i > 0 {
-			buf.AppendByte(TokenTab)
+			buf.AppendByte(tokenTab)
 		}
 		_, _ = fmt.Fprint(buf, s.elems[i])
 	}

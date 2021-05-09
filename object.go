@@ -16,7 +16,7 @@ var _ zapcore.ObjectEncoder = &objectEncoder{}
 type objectEncoder struct {
 	*zapcore.EncoderConfig
 	namespaces int
-	buf *safeBuf
+	buf        *safeBuf
 }
 
 func (enc *objectEncoder) flush(buf *buffer.Buffer) *buffer.Buffer {
@@ -25,7 +25,7 @@ func (enc *objectEncoder) flush(buf *buffer.Buffer) *buffer.Buffer {
 		return buf
 	}
 	if buf.Len() > 0 {
-		buf.AppendByte(TokenTab)
+		buf.AppendByte(tokenTab)
 	}
 	_, _ = buf.Write(enc.buf.Bytes())
 	return buf
@@ -106,7 +106,7 @@ func (enc *objectEncoder) AddReflected(key string, obj interface{}) error {
 
 func (enc *objectEncoder) OpenNamespace(key string) {
 	enc.addKey(key)
-	enc.buf.AppendByte(TokenNamespaceOpen)
+	enc.buf.AppendByte(tokenNamespaceOpen)
 	enc.namespaces++
 }
 
@@ -126,16 +126,16 @@ func (enc *objectEncoder) AddUint64(key string, val uint64) {
 }
 
 func (enc *objectEncoder) AppendArray(arr zapcore.ArrayMarshaler) error {
-	enc.buf.AppendByte(TokenArrayOpen)
+	enc.buf.AppendByte(tokenArrayOpen)
 	err := arr.MarshalLogArray(enc)
-	enc.buf.AppendByte(TokenArrayClose)
+	enc.buf.AppendByte(tokenArrayClose)
 	return err
 }
 
 func (enc *objectEncoder) AppendObject(obj zapcore.ObjectMarshaler) error {
-	enc.buf.AppendByte(TokenNamespaceOpen)
+	enc.buf.AppendByte(tokenNamespaceOpen)
 	err := obj.MarshalLogObject(enc)
-	enc.buf.AppendByte(TokenNamespaceClose)
+	enc.buf.AppendByte(tokenNamespaceClose)
 	return err
 }
 
@@ -144,19 +144,19 @@ func (enc *objectEncoder) AppendBool(val bool) {
 }
 
 func (enc *objectEncoder) AppendByteString(val []byte) {
-	enc.buf.AppendByte('"')
+	enc.buf.AppendByte(tokenStringEnclosed)
 	enc.buf.safeAddByteString(val)
-	enc.buf.AppendByte('"')
+	enc.buf.AppendByte(tokenStringEnclosed)
 }
 
 func (enc *objectEncoder) AppendComplex128(val complex128) {
 	r, i := real(val), imag(val)
-	enc.buf.AppendByte('"')
+	enc.buf.AppendByte(tokenStringEnclosed)
 	enc.buf.AppendFloat(r, 64)
 	enc.buf.AppendByte('+')
 	enc.buf.AppendFloat(i, 64)
 	enc.buf.AppendByte('i')
-	enc.buf.AppendByte('"')
+	enc.buf.AppendByte(tokenStringEnclosed)
 }
 
 func (enc *objectEncoder) AppendDuration(val time.Duration) {
@@ -181,9 +181,9 @@ func (enc *objectEncoder) AppendReflected(val interface{}) error {
 }
 
 func (enc *objectEncoder) AppendString(val string) {
-	enc.buf.AppendByte('"')
+	enc.buf.AppendByte(tokenStringEnclosed)
 	enc.buf.safeAddString(val)
-	enc.buf.AppendByte('"')
+	enc.buf.AppendByte(tokenStringEnclosed)
 }
 
 func (enc *objectEncoder) AppendTime(val time.Time) {
@@ -224,14 +224,14 @@ func (enc *objectEncoder) AppendUintptr(v uintptr)            { enc.AppendUint64
 
 func (enc *objectEncoder) closeOpenNamespaces() {
 	for i := 0; i < enc.namespaces; i++ {
-		enc.buf.AppendByte(TokenNamespaceClose)
+		enc.buf.AppendByte(tokenNamespaceClose)
 	}
 }
 
 func (enc *objectEncoder) addKey(key string) {
-	enc.buf.AppendByte(TokenTab)
+	enc.buf.AppendByte(tokenTab)
 	enc.buf.safeAddString(key)
-	enc.buf.AppendByte(TokenKeyValueSeparator)
+	enc.buf.AppendByte(tokenKeyValueSeparator)
 }
 
 func (enc *objectEncoder) appendFloat(val float64, bitSize int) {

@@ -24,7 +24,7 @@ type encoder struct {
 }
 
 func newEncoder(cfg zapcore.EncoderConfig) *encoder {
-	lineEnding := TokenLineEnding
+	lineEnding := tokenLineEnding
 	if len(cfg.LineEnding) > 0 {
 		lineEnding = cfg.LineEnding
 	}

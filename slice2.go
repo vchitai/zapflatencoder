@@ -39,7 +39,7 @@ func (s *nextSliceEncoder) flush(buf *buffer.Buffer) *buffer.Buffer {
 
 func (s *nextSliceEncoder) add(x interface{}) {
 	if s.buf.Len() > 0 {
-		s.buf.AppendByte(TokenTab)
+		s.buf.AppendByte(tokenTab)
 	}
 	_, _ = fmt.Fprint(s.buf, x)
 }

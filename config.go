@@ -7,15 +7,17 @@ import (
 )
 
 const (
+	// EncoderName registered with zap for usage
 	EncoderName            = "flat-encoder"
-	TokenTab               = '\t'
-	TokenReplacement       = `\ufffd`
-	TokenLineEnding        = zapcore.DefaultLineEnding
-	TokenNamespaceOpen     = '{'
-	TokenNamespaceClose    = '}'
-	TokenArrayOpen         = '['
-	TokenArrayClose        = ']'
-	TokenKeyValueSeparator = '='
+	tokenTab               = '\t'
+	tokenReplacement       = `\ufffd`
+	tokenLineEnding        = zapcore.DefaultLineEnding
+	tokenNamespaceOpen     = '{'
+	tokenNamespaceClose    = '}'
+	tokenArrayOpen         = '['
+	tokenArrayClose        = ']'
+	tokenKeyValueSeparator = '='
+	tokenStringEnclosed    = '"'
 )
 
 // ShortColorCallerEncoder encodes caller information with sort path filename and enable color.
