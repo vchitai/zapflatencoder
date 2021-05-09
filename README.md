@@ -39,7 +39,7 @@ Usage:
 
 Output:
 
-![ads](./docs/ads.png)
+![ads](docs/ads.png)
 
 ```shell
 2021-05-09T15:53:44.388+0700    INFO    Hello World     examples/main.go:23:23
